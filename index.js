@@ -7,9 +7,12 @@ var Engine = Matter.Engine,
     World = Matter.Composite;
 
 
-const cells = 5;
+const cells = 3;
 const width = 600;
 const height= 600;
+
+const unitLenght = width/cells;
+
 // create an engine
 var engine = Engine.create();
 const {world} = engine;
@@ -43,6 +46,20 @@ const walls = [
 World.add(world, walls);
 
 //**************Maze generation******************
+const shuffle = (arr)=>{
+    let counter = arr.length;
+
+    while (counter>0){
+        const index = Math.floor(Math.random()*counter);
+        counter--;
+        
+        const temp = arr[counter];
+        arr[counter] = arr[index];
+        arr[index] = temp; 
+    }
+    return arr;
+}
+
 //the grid keeps the squeres inside the maze, and a value if you visited or not
 const grid = Array(cells)
     .fill(null) // if we used falase insted we had depended arrays, so we will use null and map
@@ -57,5 +74,63 @@ const horizantals =Array(cells-1)
 .map(()=>Array(cells).fill(false)); 
 
 
-console.log(horizantals);
-console.log(verticals);
+const startRow = Math.floor(Math.random() * cells);
+const startColumn = Math.floor(Math.random() * cells);
+
+const stepThroughCell = (row,column)=>{
+    //If I have visited the cell at [row,col] then return
+    if(grid[row][column]
+        ){
+        return;
+    }
+    //Mark cell as being visited
+    grid[row][column] = true;
+
+    //Assemble randomly-orderd list of nighbors
+    const nieghbors =shuffle([
+        [row-1,column,'up'], 
+        [row,column+1,'right'], 
+        [row+1,column,'down'], 
+        [row,column-1,'left'] 
+    ]);
+  
+    
+    //for each neighbor
+    for(let nieghbor of nieghbors){
+        const [nxetRow,nextColumn,diraction] = nieghbor;
+    //see if that neighbor is out of bounds
+        if (nxetRow<0 || nxetRow >=cells || nextColumn<0 || nextColumn>=cells){
+            continue; //skips to next nieghbor
+        }
+    //if we have visited that nieghbor, continue to next neighbor
+        if(grid[nxetRow][nextColumn]){
+            continue;
+        }
+    //remove wall from either horizontal or vertical (depands on our walk)
+        if (diraction==='left'){
+            verticals[row][column-1] = true;
+
+        }else if (diraction==='right'){
+            verticals[row][column] = true;
+        }else if (diraction==='up'){
+            horizantals[row-1][column] = true;
+        }else if (diraction==='down'){ 
+            horizantals[row][column] = true;
+        }
+        //visit that next cell
+        stepThroughCell(nxetRow,nextColumn);
+    }
+    
+    
+}
+stepThroughCell(startRow,startColumn);
+
+
+horizantals.forEach((row)=>{
+    row.forEach((open)=>{
+        if(open){
+            return;
+        }
+        const wall = Bodies.rectangle();
+    });
+});
