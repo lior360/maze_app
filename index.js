@@ -2,7 +2,18 @@ const difficulty = document.querySelector('#difficulty');
 const {Engine,Render,Runner,Bodies,World,Body,Events} = Matter;
 let engine = Engine.create();
 let {world} = engine;
-
+const width = window.innerWidth*.9;
+const height= window.innerHeight*.85;
+// create a renderer
+var render = Render.create({
+    element: document.body,
+    engine: engine,
+    options: {
+        wireframes: false,
+        width: width,
+        height:height
+    }
+});
 let difficultyLevel = 4;
 
 const resetBtn = document.querySelector('#reset');
@@ -26,8 +37,7 @@ function createMaze(cellsX=4,cellsY=4){
 
     const cellsHorizontal = cellsX;
     const cellsVertical = cellsY;
-    const width = window.innerWidth*.9;
-    const height= window.innerHeight*.85;
+
 
     const unitLenghtX = width/cellsHorizontal;
     const unitLenghtY = height/cellsVertical;
@@ -37,16 +47,7 @@ function createMaze(cellsX=4,cellsY=4){
     engine.world.gravity.y = 0;
 
 
-    // create a renderer
-    var render = Render.create({
-        element: document.body,
-        engine: engine,
-        options: {
-            wireframes: false,
-            width: width,
-            height:height
-        }
-    });
+
 
     // run the renderer
     Render.run(render);
