@@ -126,11 +126,34 @@ const stepThroughCell = (row,column)=>{
 stepThroughCell(startRow,startColumn);
 
 
-horizantals.forEach((row)=>{
-    row.forEach((open)=>{
+horizantals.forEach((row,rowIndex)=>{
+    row.forEach((open,coumnIndex)=>{
         if(open){
             return;
         }
-        const wall = Bodies.rectangle();
+        const wall = Bodies.rectangle(
+            coumnIndex * unitLenght + unitLenght/2,
+            rowIndex*unitLenght + unitLenght,
+            unitLenght,
+            5,
+            {isStatic:true}
+        );
+        World.add(world,wall);
+    });
+});
+
+verticals.forEach((row,rowIndex)=>{
+    row.forEach((open,coumnIndex)=>{
+        if(open){
+            return;
+        }
+        const wall = Bodies.rectangle(
+            coumnIndex * unitLenght + unitLenght,
+            rowIndex*unitLenght + unitLenght/2,
+            5,
+            unitLenght,
+            {isStatic:true}
+        );
+        World.add(world,wall);
     });
 });
