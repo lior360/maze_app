@@ -5,11 +5,10 @@ var Engine = Matter.Engine,
     Runner = Matter.Runner,
     Bodies = Matter.Bodies,
     World = Matter.Composite;
-    MouseConstraint = Matter.MouseConstraint;
-    Mouse = Matter.Mouse;
 
 
-const width = 800;
+const cells = 5;
+const width = 600;
 const height= 600;
 // create an engine
 var engine = Engine.create();
@@ -20,7 +19,7 @@ var render = Render.create({
     element: document.body,
     engine: engine,
     options: {
-        wireframes: false,
+        wireframes: true,
         width: width,
         height:height
     }
@@ -31,30 +30,32 @@ Render.run(render);
 // run the engine
 Runner.run(Runner.create(), engine);
 
-World.add(world,MouseConstraint.create(engine,{
-    mouse: Mouse.create(render.canvas)
-}));
+
 
 const walls = [
-    Bodies.rectangle(400,0,800,40,{isStatic: true}),
-    Bodies.rectangle(400,600,800,40,{isStatic: true}),
-    Bodies.rectangle(0,300,40,600,{isStatic: true}),
-    Bodies.rectangle(800,300,40,600,{isStatic: true})
+    Bodies.rectangle(width/2,0,width,40,{isStatic: true}),
+    Bodies.rectangle(width/2,height,width,40,{isStatic: true}),
+    Bodies.rectangle(0,height/2,40,height,{isStatic: true}),
+    Bodies.rectangle(width,height/2,40,height,{isStatic: true})
 ]
 
 // add all of the bodies to the world
 World.add(world, walls);
 
-//random shapes
-for (let i=0;i<30;i++){
-    if (Math.random()>0.5){
-        World.add(world, Bodies.rectangle(Math.random()*width,Math.random()*height,50,50) );
-    }else{
-        World.add(world, Bodies.circle(Math.random()*width,Math.random()*height,35,{
-            render:{
-                fillStyle: 'red'
-            }
-        }) );
-    }
-    
-}
+//**************Maze generation******************
+//the grid keeps the squeres inside the maze, and a value if you visited or not
+const grid = Array(cells)
+    .fill(null) // if we used falase insted we had depended arrays, so we will use null and map
+    .map(()=>Array(cells).fill(false)); //using map to make undepanded arrays
+
+const verticals = Array(cells)
+    .fill(null) 
+    .map(()=>Array(cells-1).fill(false)); 
+
+const horizantals =Array(cells-1)
+.fill(null) 
+.map(()=>Array(cells).fill(false)); 
+
+
+console.log(horizantals);
+console.log(verticals);
