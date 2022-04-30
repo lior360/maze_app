@@ -6,10 +6,11 @@ body{
     display: none !important;
 }
 
-h1{
+.win{
     color: white;
     font-size: 64px;
 }
+
 
 .winner{
     display: flex;

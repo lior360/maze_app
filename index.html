@@ -7,11 +7,26 @@
     <title>Maze using matter-js</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.18.0/matter.min.js"></script>
     <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
+    <div class="head">
+        <h1>Maze Runner</h1>
+
+        <label for="difficulty">Select difficulty</label>
+        <select name="difficulty" id="difficulty">
+            <option value="3">Super Easy</option>
+            <option value="5">Easy</option>
+            <option value="8">Medium</option>
+            <option value="12">Hard</option>
+            <option value="15">Very Hard</option>
+        </select>
+        <button id="reset">Reset</button>
+    </div>
     <div class="winner hidden">
-        <h1>You Win!!</h1>
+        <h1 class="win">You Win!!</h1>
     </div>
     <script src="index.js"></script>
+    <script src="mazeFunction.js"></script>
 </body>
 </html>
